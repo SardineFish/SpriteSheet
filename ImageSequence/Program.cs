@@ -15,6 +15,7 @@ namespace ImageSequence
         [STAThread]
         static void Main(string[] args)
         {
+            var inverse = false;
             List<Bitmap> bmpList = new List<Bitmap>();
             var sliceWidth = 0;
             var sliceHeight = 0;
@@ -38,7 +39,10 @@ namespace ImageSequence
             gdi.Clear(Color.Transparent);
             for(var i = 0; i < bmpList.Count; i++)
             {
-                gdi.DrawImage(bmpList[i], sliceWidth * i, 0);
+                if(inverse)
+                    gdi.DrawImage(bmpList[i], sliceWidth * (i+1), 0, -sliceWidth, sliceHeight);
+                else
+                    gdi.DrawImage(bmpList[i], sliceWidth * i, 0,bmpList[i].Width,bmpList[i].Height);
                 gdi.Save();
             }
             SaveFileDialog saveFileDialog = new SaveFileDialog();
