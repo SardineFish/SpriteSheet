@@ -1,0 +1,97 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SpriteSheet"
+        xmlns:Controls="clr-namespace:SardineFish.Windows.Controls;assembly=SardineFish.Windows.Controls" x:Name="window" x:Class="SpriteSheet.MainWindow"
+        mc:Ignorable="d"
+        
+        Title="MainWindow" Height="473" Width="675" WindowStyle="None" ScrollViewer.VerticalScrollBarVisibility="Disabled" Left="0" Top="0" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen" AllowsTransparency="True" Background="{x:Null}" MouseLeftButtonDown="root_MouseDown" MouseLeftButtonUp="root_MouseUp">
+    <Window.Resources>
+    </Window.Resources>
+    <Window.Effect>
+        <DropShadowEffect BlurRadius="10" RenderingBias="Quality" Direction="0" ShadowDepth="0" Opacity="0.2"/>
+    </Window.Effect>
+    <Grid x:Name="clip" ClipToBounds="True" Margin="10">
+        <Grid.OpacityMask>
+            <VisualBrush Visual="{Binding ElementName=background}"/>
+        </Grid.OpacityMask>
+        <Border x:Name="background" MouseMove="root_MouseMove" IsHitTestVisible="True" Background="White" Margin="0" CornerRadius="2.5" ClipToBounds="True"/>
+        <Grid x:Name="root" Margin="0" Height="455">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30                                "/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid x:Name="title" SnapsToDevicePixels="True" >
+                <TextBlock Margin="16,0,0,0" Text="MainWindow" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#FF888888"/>
+                <Button x:Name="buttonMin" HorizontalAlignment="Right" Width="30" Style="{DynamicResource IconButton}" Click="buttonMin_Click" Margin="0,0,32,0" Background="#00000000">
+                    <Path Data="M19,13H5V11H19V13Z" Fill="{Binding Foreground, ElementName=buttonMin}" Height="2" Stretch="Fill" Width="9" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,6,0,0" />
+                </Button>
+                <Button x:Name="buttonClose" HorizontalAlignment="Right" Width="30" Style="{DynamicResource ButtonClose}" Click="buttonClose_Click">
+                    <Path Data="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" Fill="{Binding Foreground, ElementName=buttonClose}" Height="9" Stretch="Fill" Width="9" />
+                </Button>
+            </Grid>
+            <Grid x:Name="content" Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition Height="90"/>
+                </Grid.RowDefinitions>
+                <Grid x:Name="editorWrapper" ClipToBounds="True" MouseDown="editorWrapper_MouseDown" Background="#FFEAEAEA">
+                    <Grid HorizontalAlignment="Center" Height="100" Width="300">
+                        <Rectangle Stroke="#FFB2B2B2" StrokeThickness="3" RadiusX="20" RadiusY="20" StrokeDashArray="5 5"/>
+                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#FFB2B2B2" FontSize="21.333">Drop Images Here</TextBlock>
+                    </Grid>
+                    <Grid x:Name="workSpace" Background="#FFEAEAEA" Visibility="Collapsed">
+                        <WrapPanel x:Name="images" Margin="0" HorizontalAlignment="Center" VerticalAlignment="Center" SnapsToDevicePixels="True" RenderTransformOrigin="0.5,0.5">
+                            <WrapPanel.Effect>
+                                <DropShadowEffect ShadowDepth="0" BlurRadius="20" Opacity="0.1"/>
+                            </WrapPanel.Effect>
+                            <WrapPanel.Background>
+                                <ImageBrush ImageSource="Images/Transparent.png" Viewport="0,0,16,16" ViewportUnits="Absolute" TileMode="Tile"/>
+                            </WrapPanel.Background>
+                            <Grid Width="128" Height="128" Margin="10" Background="#FFCDCDCD"/>
+                            <Grid Width="128" Height="128" Margin="10" Background="#FFCDCDCD"/>
+                            <Grid Width="128" Height="128" Margin="10" Background="#FFCDCDCD"/>
+                            <Grid Width="128" Height="128" Margin="10" Background="#FFCDCDCD"/>
+                            <Grid Width="128" Height="128" Margin="10" Background="#FFCDCDCD"/>
+                            <Grid Width="128" Height="128" Margin="10" Background="#FFCDCDCD"/>
+                            <Grid Width="128" Height="128" Margin="10" Background="#FFCDCDCD"/>
+                            <Grid Width="128" Height="128" Margin="10" Background="#FFCDCDCD"/>
+                            <Grid Width="128" Height="128" Margin="10" Background="#FFCDCDCD"/>
+                            <Grid Width="128" Height="128" Margin="10" Background="#FFCDCDCD"/>
+                            <Grid Width="128" Height="128" Margin="10" Background="#FFCDCDCD"/>
+                            <Grid Width="128" Height="128" Margin="10" Background="#FFCDCDCD"/>
+                            <Grid Width="128" Height="128" Margin="10" Background="#FFCDCDCD"/>
+                            <Grid Width="128" Height="128" Margin="10" Background="#FFCDCDCD"/>
+                        </WrapPanel>
+                    </Grid>
+
+                </Grid>
+                <Grid x:Name="controlPanel" Grid.Row="1" Background="White" MouseMove="root_MouseMove" MouseLeftButtonDown="root_MouseDown" MouseLeftButtonUp="root_MouseUp">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition Height="46"/>
+                    </Grid.RowDefinitions>
+                    <Grid.Effect>
+                        <DropShadowEffect ShadowDepth="0" BlurRadius="20" Opacity="0.1"/>
+                    </Grid.Effect>
+                    <StackPanel Margin="10,10,10,0" Orientation="Horizontal" TextElement.Foreground="#777">
+                        <TextBlock VerticalAlignment="Center">MultiRow</TextBlock>
+                        <Controls:Switch Height="20" Width="40" SwitchStatus="Off" Margin="5,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" ButtonBackgroundBrush="#FFB0B0B0" SwitchBackgroundBrush="#FFE2E2E2" Foreground="{x:Null}" BorderBrush="{x:Null}" Background="White"/>
+                        <TextBlock VerticalAlignment="Center" Margin="20,0,0,0">Horizontal Reverse</TextBlock>
+                        <Controls:Switch Margin="5,0,0,0"></Controls:Switch>
+                    </StackPanel>
+                    <Grid Grid.Row="1" Margin="10,0,10,10" >
+                        <TextBox VerticalAlignment="Bottom" Style="{DynamicResource TextBoxStyle}" Foreground="#FF4F4F4F" Padding="5,3,5,1" Margin="0,0,209.543,0" Text="Path"/>
+                        <Button x:Name="buttonBrowse" HorizontalAlignment="Right" Width="29.543" Margin="0,10.76,175,0" Style="{DynamicResource IconButtonLight}" Background="#02FFFFFF">
+                            <Path Data="M19,20H4C2.89,20 2,19.1 2,18V6C2,4.89 2.89,4 4,4H10L12,6H19A2,2 0 0,1 21,8H21L4,8V18L6.14,10H23.21L20.93,18.5C20.7,19.37 19.92,20 19,20Z" Fill="{Binding Foreground, ElementName=buttonBrowse}" />
+                        </Button>
+                        <Button HorizontalAlignment="Right" VerticalAlignment="Bottom" Padding="20,5" Style="{DynamicResource RadiusButton}" Background="#FF50CDFF" Foreground="White" Margin="0,0,90,0" Width="80">Export</Button>
+                        <Button HorizontalAlignment="Right" VerticalAlignment="Bottom" Padding="20,5" Style="{DynamicResource RadiusButton}" Background="#FFD4D4D4" Foreground="#FF646464" Width="80">Reset</Button>
+                    </Grid>
+                </Grid>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>
