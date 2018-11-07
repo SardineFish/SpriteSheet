@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using SardineFish.Windows.Controls;
+using System.IO;
+using Microsoft.Win32;
 
 namespace SpriteSheet
 {
@@ -21,7 +23,9 @@ namespace SpriteSheet
     /// </summary>
     public partial class MainWindow : Window
     {
+        public const int ScrollUnit = 32;
         public SpriteSheetGenerator SpriteSheet;
+        Brush TranspatentBG;
         bool dragHold = false;
         Vector RenderImageSize;
         Vector PreviewImageSize;
@@ -30,10 +34,12 @@ namespace SpriteSheet
         public MainWindow()
         {
             InitializeComponent();
+            
         }
 
         public void Update()
         {
+            workSpace.Visibility = Visibility.Visible;
             Columns = SpriteSheet.Columns;
             if (switchMultiRow.SwitchStatus == SardineFish.Windows.Controls.SwitchStatus.Off)
                 Columns = SpriteSheet.Images.Count;
@@ -135,7 +141,7 @@ namespace SpriteSheet
                 SpriteSheet = new SpriteSheetGenerator(paths);
                 SpriteSheet.Load();
                 Update();
-                
+                textPath.Text = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(paths[0]), "SpriteSheet.png");
             }
         }
 
@@ -153,6 +159,58 @@ namespace SpriteSheet
             if (switchSnap2Pow.SwitchStatus == SwitchStatus.On)
                 switchMultiRow.SwitchStatus = SwitchStatus.On;
             Update();
+        }
+
+        private void dropBackground_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (TranspatentBG == null)
+                return;
+            switch (dropBackground.SelectedIndex)
+            {
+                case 0:
+                    images.Background = TranspatentBG;
+                    break;
+                case 1:
+                    images.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FEFEFE"));
+                    break;
+                case 2:
+                    images.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#3c3c3c"));
+                    break;
+            }
+        }
+
+        private void window_Loaded(object sender, RoutedEventArgs e)
+        {
+            TranspatentBG = images.Background;
+            workSpace.Visibility = Visibility.Collapsed;
+        }
+
+        private void workSpace_MouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            var scroll = Math.Sign(e.Delta) * ScrollUnit;
+            if(switchMultiRow.SwitchStatus == SwitchStatus.On)
+            {
+                imagesTransform.Y += scroll;
+            }
+            else
+            {
+                imagesTransform.X += scroll;
+            }
+        }
+
+        private void buttonReset_Click(object sender, RoutedEventArgs e)
+        {
+            workSpace.Visibility = Visibility.Collapsed;
+        }
+
+        private void buttonBrowse_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog saveFile = new SaveFileDialog();
+            saveFile.InitialDirectory = System.IO.Path.GetDirectoryName(textPath.Text);
+            saveFile.Filter = "Image Files(*.png)|*.png";
+            saveFile.FileName = "SpriteSheet.png";
+            saveFile.ShowDialog();
+            textPath.Text = saveFile.FileName;
         }
     }
 }
