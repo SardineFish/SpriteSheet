@@ -7,7 +7,7 @@
         xmlns:Controls="clr-namespace:SardineFish.Windows.Controls;assembly=SardineFish.Windows.Controls" x:Name="window" x:Class="SpriteSheet.MainWindow"
         mc:Ignorable="d"
         
-        Title="MainWindow" Height="473" Width="675" WindowStyle="None" ScrollViewer.VerticalScrollBarVisibility="Disabled" Left="0" Top="0" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen" AllowsTransparency="True" Background="{x:Null}" MouseLeftButtonDown="root_MouseDown" MouseLeftButtonUp="root_MouseUp">
+        Title="MainWindow" Height="473" Width="675" Topmost="True" UseLayoutRounding="True" WindowStyle="None" ScrollViewer.VerticalScrollBarVisibility="Disabled" Left="0" Top="0" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen" AllowsTransparency="True" Background="{x:Null}" MouseLeftButtonDown="root_MouseDown" MouseLeftButtonUp="root_MouseUp">
     <Window.Resources>
     </Window.Resources>
     <Window.Effect>
@@ -32,40 +32,34 @@
                     <Path Data="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" Fill="{Binding Foreground, ElementName=buttonClose}" Height="9" Stretch="Fill" Width="9" />
                 </Button>
             </Grid>
-            <Grid x:Name="content" Grid.Row="1">
+            <Grid x:Name="content" Grid.Row="1" ClipToBounds="False">
                 <Grid.RowDefinitions>
                     <RowDefinition/>
                     <RowDefinition Height="90"/>
                 </Grid.RowDefinitions>
-                <Grid x:Name="editorWrapper" ClipToBounds="True" MouseDown="editorWrapper_MouseDown" Background="#FFEAEAEA">
+                <Grid x:Name="editorWrapper" AllowDrop="True" MouseDown="editorWrapper_MouseDown" Background="#FFEAEAEA" ClipToBounds="False" DragEnter="editorWrapper_DragEnter" Drop="editorWrapper_Drop">
                     <Grid HorizontalAlignment="Center" Height="100" Width="300">
                         <Rectangle Stroke="#FFB2B2B2" StrokeThickness="3" RadiusX="20" RadiusY="20" StrokeDashArray="5 5"/>
                         <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#FFB2B2B2" FontSize="21.333">Drop Images Here</TextBlock>
                     </Grid>
-                    <Grid x:Name="workSpace" Background="#FFEAEAEA" Visibility="Collapsed">
-                        <WrapPanel x:Name="images" Margin="0" HorizontalAlignment="Center" VerticalAlignment="Center" SnapsToDevicePixels="True" RenderTransformOrigin="0.5,0.5">
+                    <Canvas x:Name="workSpace" Background="#FFEAEAEA" Margin="0">
+                        <WrapPanel x:Name="images" Margin="0" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" VerticalAlignment="Top" ScrollViewer.VerticalScrollBarVisibility="Disabled" UseLayoutRounding="True" SnapsToDevicePixels="True">
+                            <WrapPanel.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform/>
+                                    <SkewTransform/>
+                                    <RotateTransform/>
+                                    <TranslateTransform x:Name="imagesTransform" Y="0"/>
+                                </TransformGroup>
+                            </WrapPanel.RenderTransform>
                             <WrapPanel.Effect>
                                 <DropShadowEffect ShadowDepth="0" BlurRadius="20" Opacity="0.1"/>
                             </WrapPanel.Effect>
                             <WrapPanel.Background>
-                                <ImageBrush ImageSource="Images/Transparent.png" Viewport="0,0,16,16" ViewportUnits="Absolute" TileMode="Tile"/>
+                                <ImageBrush ImageSource="Images/Transparent.png" RenderOptions.BitmapScalingMode="HighQuality" RenderOptions.EdgeMode="Unspecified" Viewport="0,0,16,16" ViewportUnits="Absolute" TileMode="Tile"/>
                             </WrapPanel.Background>
-                            <Grid Width="128" Height="128" Margin="10" Background="#FFCDCDCD"/>
-                            <Grid Width="128" Height="128" Margin="10" Background="#FFCDCDCD"/>
-                            <Grid Width="128" Height="128" Margin="10" Background="#FFCDCDCD"/>
-                            <Grid Width="128" Height="128" Margin="10" Background="#FFCDCDCD"/>
-                            <Grid Width="128" Height="128" Margin="10" Background="#FFCDCDCD"/>
-                            <Grid Width="128" Height="128" Margin="10" Background="#FFCDCDCD"/>
-                            <Grid Width="128" Height="128" Margin="10" Background="#FFCDCDCD"/>
-                            <Grid Width="128" Height="128" Margin="10" Background="#FFCDCDCD"/>
-                            <Grid Width="128" Height="128" Margin="10" Background="#FFCDCDCD"/>
-                            <Grid Width="128" Height="128" Margin="10" Background="#FFCDCDCD"/>
-                            <Grid Width="128" Height="128" Margin="10" Background="#FFCDCDCD"/>
-                            <Grid Width="128" Height="128" Margin="10" Background="#FFCDCDCD"/>
-                            <Grid Width="128" Height="128" Margin="10" Background="#FFCDCDCD"/>
-                            <Grid Width="128" Height="128" Margin="10" Background="#FFCDCDCD"/>
                         </WrapPanel>
-                    </Grid>
+                    </Canvas>
 
                 </Grid>
                 <Grid x:Name="controlPanel" Grid.Row="1" Background="White" MouseMove="root_MouseMove" MouseLeftButtonDown="root_MouseDown" MouseLeftButtonUp="root_MouseUp">
@@ -78,9 +72,11 @@
                     </Grid.Effect>
                     <StackPanel Margin="10,10,10,0" Orientation="Horizontal" TextElement.Foreground="#777">
                         <TextBlock VerticalAlignment="Center">MultiRow</TextBlock>
-                        <Controls:Switch Height="20" Width="40" SwitchStatus="Off" Margin="5,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" ButtonBackgroundBrush="#FFB0B0B0" SwitchBackgroundBrush="#FFE2E2E2" Foreground="{x:Null}" BorderBrush="{x:Null}" Background="White"/>
+                        <Controls:Switch x:Name="switchMultiRow" Height="20" Width="40" SwitchStatus="Off" Margin="5,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" ButtonBackgroundBrush="#FFB0B0B0" SwitchBackgroundBrush="#FFE2E2E2" Foreground="{x:Null}" BorderBrush="{x:Null}" Background="White" SwitchChanged="switchMultiRow_SwitchChanged"/>
                         <TextBlock VerticalAlignment="Center" Margin="20,0,0,0">Horizontal Reverse</TextBlock>
-                        <Controls:Switch Margin="5,0,0,0"></Controls:Switch>
+                        <Controls:Switch x:Name="switchReverse" Margin="5,0,0,0" SwitchChanged="switchReverse_SwitchChanged"></Controls:Switch>
+                        <TextBlock HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Center"><Run>Snap to 2</Run><Run Typography.Variants="Subscript" BaselineAlignment="Top" FontSize="6.667">n</Run></TextBlock>
+                        <Controls:Switch x:Name="switchSnap2Pow" Padding="0" Margin="5,0,0,0" SwitchChanged="switchSnap2Pow_SwitchChanged"></Controls:Switch>
                     </StackPanel>
                     <Grid Grid.Row="1" Margin="10,0,10,10" >
                         <TextBox VerticalAlignment="Bottom" Style="{DynamicResource TextBoxStyle}" Foreground="#FF4F4F4F" Padding="5,3,5,1" Margin="0,0,209.543,0" Text="Path"/>
