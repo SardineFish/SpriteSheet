@@ -18,6 +18,8 @@ namespace SpriteSheet
         public int MaxHeight => Images.Max(img => img.Height);
         public int Columns => (int)Math.Ceiling(Math.Sqrt((double)Images.Count * MaxHeight / MaxWidth));
 
+        public event Action<double> OnProgress;
+
         public SpriteSheetGenerator(string[] paths)
         {
             Paths = paths.OrderBy(p => p).ToArray();
@@ -25,8 +27,10 @@ namespace SpriteSheet
 
         public void Load()
         {
-            foreach (var path in Paths)
+            for(var i = 0; i < Paths.Length; i++)
             {
+                var path = Paths[i];
+
                 SKBitmap bitmap = null;
 
                 using (var fs = new FileStream(path, FileMode.Open))
@@ -35,7 +39,31 @@ namespace SpriteSheet
                     fs.Close();
                 }
                 Images.Add(bitmap);
+                OnProgress?.Invoke((double)(i + 1) / Paths.Length);
             }
+        }
+
+        public SKBitmap Render(int width, int height)
+        {
+            var w = width / MaxWidth;
+            var h = height / MaxHeight;
+            var bitmap = new SKBitmap(width, height, SKColorType.Bgra8888, SKAlphaType.Premul);
+            using(var canvas = new SKCanvas(bitmap))
+            {
+                for (var y = 0; y < h; y++)
+                {
+                    for (var x = 0; x < w; x++)
+                    {
+                        var idx = y * w + x;
+                        if (idx >= Images.Count)
+                            goto End;
+                        canvas.DrawBitmap(Images[idx], x * MaxWidth, y * MaxHeight);
+                        OnProgress?.Invoke((double)(idx + 1) / Images.Count);
+                    }
+                }
+            }
+            End:
+            return bitmap;
         }
 
         // Reference http://lostindetails.com/blog/post/SkiaSharp-with-Wpf

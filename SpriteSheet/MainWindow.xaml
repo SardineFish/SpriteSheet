@@ -70,7 +70,7 @@
                     <Grid.Effect>
                         <DropShadowEffect ShadowDepth="0" BlurRadius="20" Opacity="0.1"/>
                     </Grid.Effect>
-                    <ProgressBar Height="5" VerticalAlignment="Top" Style="{DynamicResource SolidProgressBar}" Value="0"></ProgressBar>
+                    <ProgressBar x:Name="progressBar" Height="5" VerticalAlignment="Top" Style="{DynamicResource SolidProgressBar}" Value="0"></ProgressBar>
                     <StackPanel Margin="10,10,10,0" Orientation="Horizontal" TextElement.Foreground="#777">
                         <TextBlock VerticalAlignment="Center">Wrap</TextBlock>
                         <Controls:Switch x:Name="switchMultiRow" Height="20" Width="40" SwitchStatus="Off" Margin="5,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" ButtonBackgroundBrush="#FFB0B0B0" SwitchBackgroundBrush="#FFE2E2E2" Foreground="{x:Null}" BorderBrush="{x:Null}" Background="White" SwitchChanged="switchMultiRow_SwitchChanged"/>
@@ -92,7 +92,7 @@
                         <Button x:Name="buttonBrowse" HorizontalAlignment="Right" Width="29.543" Margin="0,10.76,175,0" Style="{DynamicResource IconButtonLight}" Background="#02FFFFFF" Click="buttonBrowse_Click">
                             <Path Data="M19,20H4C2.89,20 2,19.1 2,18V6C2,4.89 2.89,4 4,4H10L12,6H19A2,2 0 0,1 21,8H21L4,8V18L6.14,10H23.21L20.93,18.5C20.7,19.37 19.92,20 19,20Z" Fill="{Binding Foreground, ElementName=buttonBrowse}" />
                         </Button>
-                        <Button x:Name="buttonExport" HorizontalAlignment="Right" VerticalAlignment="Bottom" Padding="20,5" Style="{DynamicResource RadiusButton}" Background="#FF50CDFF" Foreground="White" Margin="0,0,90,0" Width="80">Export</Button>
+                        <Button x:Name="buttonExport" HorizontalAlignment="Right" VerticalAlignment="Bottom" Padding="20,5" Style="{DynamicResource RadiusButton}" Background="#FF50CDFF" Foreground="White" Margin="0,0,90,0" Width="80" Click="buttonExport_Click">Export</Button>
                         <Button x:Name="buttonReset" HorizontalAlignment="Right" VerticalAlignment="Bottom" Padding="20,5" Style="{DynamicResource RadiusButton}" Background="#FFD4D4D4" Foreground="#FF646464" Width="80" Click="buttonReset_Click">Reset</Button>
                     </Grid>
                 </Grid>

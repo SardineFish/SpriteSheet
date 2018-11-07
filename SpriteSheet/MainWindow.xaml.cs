@@ -24,7 +24,10 @@ namespace SpriteSheet
     public partial class MainWindow : Window
     {
         public const int ScrollUnit = 32;
+        public const double SpriteLoadProgress = 0.8;
+        public const double PreviewLoadProgress = 0.2;
         public SpriteSheetGenerator SpriteSheet;
+        Task SpriteTask;
         Brush TranspatentBG;
         bool dragHold = false;
         Vector RenderImageSize;
@@ -37,7 +40,7 @@ namespace SpriteSheet
             
         }
 
-        public void Update()
+        public async void Update()
         {
             workSpace.Visibility = Visibility.Visible;
             Columns = SpriteSheet.Columns;
@@ -88,13 +91,19 @@ namespace SpriteSheet
             imagesTransform.X = centerOffset.X;
             imagesTransform.Y = centerOffset.Y;
 
-            foreach (var img in SpriteSheet.Images)
+            for(var i=0;i<SpriteSheet.Images.Count;i++)
             {
+                var img = SpriteSheet.Images[i];
+
                 var grid = new Grid();
                 grid.Width = SpriteSheet.MaxWidth * scale;
                 grid.Height = SpriteSheet.MaxHeight * scale;
                 var image = new Image();
+
+                /*var task = new Task<WriteableBitmap>(() => SpriteSheetGenerator.ToWriteableBitmap(img, SpriteSheet.MaxWidth, SpriteSheet.MaxHeight));
+                task.Start();*/
                 image.Source = SpriteSheetGenerator.ToWriteableBitmap(img, SpriteSheet.MaxWidth, SpriteSheet.MaxHeight);
+
                 image.SetValue(RenderOptions.BitmapScalingModeProperty, BitmapScalingMode.HighQuality);
                 image.SetValue(RenderOptions.EdgeModeProperty, EdgeMode.Unspecified);
                 image.SnapsToDevicePixels = true;
@@ -103,7 +112,12 @@ namespace SpriteSheet
                 image.Stretch = Stretch.Fill;
                 grid.Children.Add(image);
                 images.Children.Add(grid);
+
+                progressBar.Value  =100*PreviewLoadProgress * ((double)(i+1)/SpriteSheet.Images.Count) + 100*(1-PreviewLoadProgress);
             }
+
+            await Task.Delay(500);
+            progressBar.Value = 0;
         }
 
         private void buttonClose_Click(object sender, RoutedEventArgs e)
@@ -133,16 +147,30 @@ namespace SpriteSheet
                 e.Effects = DragDropEffects.None;
         }
 
-        private void editorWrapper_Drop(object sender, DragEventArgs e)
+        private async void editorWrapper_Drop(object sender, DragEventArgs e)
         {
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
                 var paths = (e.Data.GetData(DataFormats.FileDrop) as string[]);
                 SpriteSheet = new SpriteSheetGenerator(paths);
-                SpriteSheet.Load();
+                SpriteSheet.OnProgress += SpriteSheet_OnProgress;
+                SpriteTask = new Task(()=>
+                {
+                    SpriteSheet.Load();
+                });
+                SpriteTask.Start();
+                await SpriteTask;
                 Update();
                 textPath.Text = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(paths[0]), "SpriteSheet.png");
             }
+        }
+
+        private void SpriteSheet_OnProgress(double progress)
+        {
+            this.Dispatcher.Invoke(() =>
+            {
+                progressBar.Value = 100 * SpriteLoadProgress * progress;
+            });
         }
 
         private void switchMultiRow_SwitchChanged(object sender, EventArgs e)
@@ -211,6 +239,24 @@ namespace SpriteSheet
             saveFile.FileName = "SpriteSheet.png";
             saveFile.ShowDialog();
             textPath.Text = saveFile.FileName;
+        }
+
+        private async void buttonExport_Click(object sender, RoutedEventArgs e)
+        {
+            var task = new Task<SkiaSharp.SKBitmap>(() => SpriteSheet.Render((int)RenderImageSize.X, (int)RenderImageSize.Y));
+            task.Start();
+            var bitmap = await task;
+            using (var fs = new FileStream(textPath.Text, FileMode.Create))
+            using (var sks = new SkiaSharp.SKManagedWStream(fs))
+            {
+                SkiaSharp.SKPixmap.Encode(sks, bitmap, SkiaSharp.SKEncodedImageFormat.Png, 100);
+                sks.Flush();
+                fs.Close();
+            }
+            progressBar.Value = 100;
+
+            await Task.Delay(500);
+            progressBar.Value = 0;
         }
     }
 }
