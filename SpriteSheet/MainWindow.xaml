@@ -7,7 +7,7 @@
         xmlns:Controls="clr-namespace:SardineFish.Windows.Controls;assembly=SardineFish.Windows.Controls" x:Name="window" x:Class="SpriteSheet.MainWindow"
         mc:Ignorable="d"
         
-        Title="MainWindow" Height="473" Icon="Images/AppIcon.ico" Width="675" Topmost="False" UseLayoutRounding="True" WindowStyle="None" ScrollViewer.VerticalScrollBarVisibility="Disabled" Left="0" Top="0" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen" AllowsTransparency="True" Background="{x:Null}" MouseLeftButtonDown="root_MouseDown" MouseLeftButtonUp="root_MouseUp" Loaded="window_Loaded">
+        Title="SpriteSheet" Height="473" Icon="Images/AppIcon.ico" Width="675" Topmost="False" UseLayoutRounding="True" WindowStyle="None" ScrollViewer.VerticalScrollBarVisibility="Disabled" Left="0" Top="0" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen" AllowsTransparency="True" Background="{x:Null}" MouseLeftButtonDown="root_MouseDown" MouseLeftButtonUp="root_MouseUp" Loaded="window_Loaded">
     <Window.Resources>
     </Window.Resources>
     <Window.Effect>
@@ -24,7 +24,7 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <Grid x:Name="title" SnapsToDevicePixels="True" >
-                <TextBlock Margin="16,0,0,0" Text="MainWindow" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#FF888888"/>
+                <TextBlock Margin="16,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#FF888888" Text="SpriteSheet"/>
                 <Button x:Name="buttonMin" HorizontalAlignment="Right" Width="30" Style="{DynamicResource IconButton}" Click="buttonMin_Click" Margin="0,0,32,0" Background="#00000000">
                     <Path Data="M19,13H5V11H19V13Z" Fill="{Binding Foreground, ElementName=buttonMin}" Height="2" Stretch="Fill" Width="9" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,6,0,0" />
                 </Button>
@@ -88,7 +88,7 @@
                         </ComboBox>
                     </StackPanel>
                     <Grid Grid.Row="1" Margin="10,0,10,10" >
-                        <TextBox x:Name="textPath" VerticalAlignment="Bottom" Style="{DynamicResource TextBoxStyle}" Foreground="#FF4F4F4F" Padding="5,3,5,1" Margin="0,0,209.543,0" Text="Path"/>
+                        <TextBox x:Name="textPath" VerticalAlignment="Bottom" Style="{DynamicResource TextBoxStyle}" Foreground="#FF4F4F4F" Padding="5,3,5,1" Margin="0,0,209.543,0" Text="/path/to/export.png"/>
                         <Button x:Name="buttonBrowse" HorizontalAlignment="Right" Width="29.543" Margin="0,10.76,175,0" Style="{DynamicResource IconButtonLight}" Background="#02FFFFFF" Click="buttonBrowse_Click">
                             <Path Data="M19,20H4C2.89,20 2,19.1 2,18V6C2,4.89 2.89,4 4,4H10L12,6H19A2,2 0 0,1 21,8H21L4,8V18L6.14,10H23.21L20.93,18.5C20.7,19.37 19.92,20 19,20Z" Fill="{Binding Foreground, ElementName=buttonBrowse}" />
                         </Button>
