@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Blend for Visual Studio 15
+# Visual Studio 15
 VisualStudioVersion = 15.0.27004.2009
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageSequence", "ImageSequence\ImageSequence.csproj", "{5C53A478-4A99-4538-AFF7-46B4B95C3C8E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpriteSheet", "SpriteSheet\SpriteSheet.csproj", "{338D3B48-AACB-4BCE-AE96-ECFC2B5FD12E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SardineFish.Windows.Controls", "..\..\..\C#\SardineFish.Windows.Controls\SardineFish.Windows.Controls.csproj", "{2CB2E459-7336-4827-B999-18E61875DF72}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SardineFish.Windows.Controls", "SardineFish.Windows.Controls\SardineFish.Windows.Controls.csproj", "{2CB2E459-7336-4827-B999-18E61875DF72}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

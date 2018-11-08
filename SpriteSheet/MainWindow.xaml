@@ -7,7 +7,7 @@
         xmlns:Controls="clr-namespace:SardineFish.Windows.Controls;assembly=SardineFish.Windows.Controls" x:Name="window" x:Class="SpriteSheet.MainWindow"
         mc:Ignorable="d"
         
-        Title="MainWindow" Height="473" Width="675" Topmost="False" UseLayoutRounding="True" WindowStyle="None" ScrollViewer.VerticalScrollBarVisibility="Disabled" Left="0" Top="0" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen" AllowsTransparency="True" Background="{x:Null}" MouseLeftButtonDown="root_MouseDown" MouseLeftButtonUp="root_MouseUp" Loaded="window_Loaded">
+        Title="MainWindow" Height="473" Icon="Images/AppIcon.ico" Width="675" Topmost="False" UseLayoutRounding="True" WindowStyle="None" ScrollViewer.VerticalScrollBarVisibility="Disabled" Left="0" Top="0" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen" AllowsTransparency="True" Background="{x:Null}" MouseLeftButtonDown="root_MouseDown" MouseLeftButtonUp="root_MouseUp" Loaded="window_Loaded">
     <Window.Resources>
     </Window.Resources>
     <Window.Effect>

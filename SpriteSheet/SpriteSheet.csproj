@@ -36,6 +36,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Images\AppIcon.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="PresentationFramework.Aero2" />
     <Reference Include="SkiaSharp, Version=1.60.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
@@ -112,11 +115,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Transparent.png" />
+    <Resource Include="Images\AppIcon.ico" />
     <Content Include="material-design-icons-3.0.1\material-icons.css" />
     <Content Include="material-design-icons-3.0.1\MaterialIcons-Regular.svg" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\C#\SardineFish.Windows.Controls\SardineFish.Windows.Controls.csproj">
+    <ProjectReference Include="..\SardineFish.Windows.Controls\SardineFish.Windows.Controls.csproj">
       <Project>{2cb2e459-7336-4827-b999-18e61875df72}</Project>
       <Name>SardineFish.Windows.Controls</Name>
     </ProjectReference>
