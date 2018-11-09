@@ -33,13 +33,30 @@ namespace SpriteSheet
 
                 SKBitmap bitmap = null;
 
+                using (var ms = new MemoryStream())
+                {
+                    using (var fs = new FileStream(path, FileMode.Open))
+                    {
+                        fs.CopyTo(ms);
+                        ms.Flush();
+                        fs.Close();
+                    }
+
+                    ms.Position = 0;
+                    bitmap = SKBitmap.Decode(ms);
+                    Images.Add(bitmap);
+                    OnProgress?.Invoke((double)(i + 1) / Paths.Length);
+
+                }
+
+                /*
                 using (var fs = new FileStream(path, FileMode.Open))
                 {
                     bitmap = SKBitmap.Decode(fs);
                     fs.Close();
                 }
                 Images.Add(bitmap);
-                OnProgress?.Invoke((double)(i + 1) / Paths.Length);
+                OnProgress?.Invoke((double)(i + 1) / Paths.Length);*/
             }
         }
 
