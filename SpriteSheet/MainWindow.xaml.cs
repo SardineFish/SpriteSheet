@@ -246,12 +246,19 @@ namespace SpriteSheet
             var task = new Task<SkiaSharp.SKBitmap>(() => SpriteSheet.Render((int)RenderImageSize.X, (int)RenderImageSize.Y));
             task.Start();
             var bitmap = await task;
-            using (var fs = new FileStream(textPath.Text, FileMode.Create))
-            using (var sks = new SkiaSharp.SKManagedWStream(fs))
+            using (var ms = new MemoryStream())
+            using (var sks = new SkiaSharp.SKManagedWStream(ms))
             {
                 SkiaSharp.SKPixmap.Encode(sks, bitmap, SkiaSharp.SKEncodedImageFormat.Png, 100);
                 sks.Flush();
-                fs.Close();
+
+                using (var fs = new FileStream(textPath.Text, FileMode.Create))
+                {
+                    ms.Position = 0;
+                    ms.WriteTo(fs);
+                    fs.Flush();
+                    fs.Close();
+                }
             }
             progressBar.Value = 100;
 
