@@ -67,6 +67,7 @@ namespace SpriteSheet
             var bitmap = new SKBitmap(width, height, SKColorType.Bgra8888, SKAlphaType.Premul);
             using(var canvas = new SKCanvas(bitmap))
             {
+                canvas.Clear();
                 for (var y = 0; y < h; y++)
                 {
                     for (var x = 0; x < w; x++)
@@ -78,8 +79,10 @@ namespace SpriteSheet
                         OnProgress?.Invoke((double)(idx + 1) / Images.Count);
                     }
                 }
+                End:
+                canvas.Flush();
+                canvas.Dispose();
             }
-            End:
             return bitmap;
         }
 

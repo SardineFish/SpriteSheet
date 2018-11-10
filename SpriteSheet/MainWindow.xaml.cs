@@ -247,10 +247,12 @@ namespace SpriteSheet
             task.Start();
             var bitmap = await task;
             using (var ms = new MemoryStream())
-            using (var sks = new SkiaSharp.SKManagedWStream(ms))
             {
-                SkiaSharp.SKPixmap.Encode(sks, bitmap, SkiaSharp.SKEncodedImageFormat.Png, 100);
-                sks.Flush();
+                using (var sks = new SkiaSharp.SKManagedWStream(ms))
+                {
+                    SkiaSharp.SKPixmap.Encode(sks, bitmap, SkiaSharp.SKEncodedImageFormat.Png, 100);
+                    sks.Flush();
+                }
 
                 using (var fs = new FileStream(textPath.Text, FileMode.Create))
                 {
