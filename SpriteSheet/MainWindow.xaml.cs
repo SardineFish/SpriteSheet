@@ -180,7 +180,15 @@ namespace SpriteSheet
             Update();
         }
 
-        private void switchReverse_SwitchChanged(object sender, EventArgs e) => Update();
+        private void switchClip_SwitchChanged(object sender, EventArgs e)
+        {
+            if (switchClip.SwitchStatus == SwitchStatus.On)
+                SpriteSheet.ClipTransparent = true;
+            else
+                SpriteSheet.ClipTransparent = false;
+            SpriteSheet.PostProcess();
+            Update();
+        }
 
         private void switchSnap2Pow_SwitchChanged(object sender, EventArgs e)
         {

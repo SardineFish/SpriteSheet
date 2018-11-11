@@ -24,7 +24,7 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <Grid x:Name="title" SnapsToDevicePixels="True" >
-                <TextBlock Margin="16,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#FF888888" >SpriteSheet v1.0.2</TextBlock>
+                <TextBlock Margin="16,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#FF888888" >SpriteSheet v1.1.0</TextBlock>
                 <Button x:Name="buttonMin" HorizontalAlignment="Right" Width="30" Style="{DynamicResource IconButton}" Click="buttonMin_Click" Margin="0,0,32,0" Background="#00000000">
                     <Path Data="M19,13H5V11H19V13Z" Fill="{Binding Foreground, ElementName=buttonMin}" Height="2" Stretch="Fill" Width="9" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,6,0,0" />
                 </Button>
@@ -74,8 +74,8 @@
                     <StackPanel Margin="10,10,10,0" Orientation="Horizontal" TextElement.Foreground="#777">
                         <TextBlock VerticalAlignment="Center">Wrap</TextBlock>
                         <Controls:Switch x:Name="switchMultiRow" Height="20" Width="40" SwitchStatus="Off" Margin="5,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" ButtonBackgroundBrush="#FFB0B0B0" SwitchBackgroundBrush="#FFE2E2E2" Foreground="{x:Null}" BorderBrush="{x:Null}" Background="White" SwitchChanged="switchMultiRow_SwitchChanged"/>
-                        <TextBlock VerticalAlignment="Center" Margin="20,0,0,0">Horizontal Reverse</TextBlock>
-                        <Controls:Switch x:Name="switchReverse" Margin="5,0,0,0" SwitchChanged="switchReverse_SwitchChanged"></Controls:Switch>
+                        <TextBlock VerticalAlignment="Center" Margin="20,0,0,0">Clip Transparent</TextBlock>
+                        <Controls:Switch x:Name="switchClip" Margin="5,0,0,0" SwitchChanged="switchClip_SwitchChanged"></Controls:Switch>
                         <TextBlock HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Center"><Run>Snap to 2</Run><Run Typography.Variants="Subscript" BaselineAlignment="Top" FontSize="6.667">n</Run></TextBlock>
                         <Controls:Switch x:Name="switchSnap2Pow" Padding="0" Margin="5,0,0,0" SwitchChanged="switchSnap2Pow_SwitchChanged"></Controls:Switch>
                         <TextBlock VerticalAlignment="Center" Margin="20,0,0,0">Preview Background</TextBlock>
