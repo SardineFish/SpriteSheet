@@ -24,7 +24,7 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <Grid x:Name="title" SnapsToDevicePixels="True" >
-                <TextBlock Margin="16,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#FF888888" >SpriteSheet v1.1.0</TextBlock>
+                <TextBlock Margin="16,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#FF888888" >SpriteSheet v1.1.1</TextBlock>
                 <Button x:Name="buttonMin" HorizontalAlignment="Right" Width="30" Style="{DynamicResource IconButton}" Click="buttonMin_Click" Margin="0,0,32,0" Background="#00000000">
                     <Path Data="M19,13H5V11H19V13Z" Fill="{Binding Foreground, ElementName=buttonMin}" Height="2" Stretch="Fill" Width="9" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,6,0,0" />
                 </Button>

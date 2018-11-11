@@ -153,6 +153,7 @@ namespace SpriteSheet
             {
                 var paths = (e.Data.GetData(DataFormats.FileDrop) as string[]);
                 SpriteSheet = new SpriteSheetGenerator(paths);
+                SpriteSheet.ClipTransparent = switchClip.SwitchStatus == SwitchStatus.On ? true : false;
                 SpriteSheet.OnProgress += SpriteSheet_OnProgress;
                 SpriteTask = new Task(()=>
                 {
