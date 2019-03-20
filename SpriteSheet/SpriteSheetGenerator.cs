@@ -15,6 +15,7 @@ namespace SpriteSheet
         string[] Paths;
         public List<SKBitmap> OriginImages = new List<SKBitmap>();
         public List<SKBitmap> Images = new List<SKBitmap>();
+        public SpriteSheetData SpriteSheetData;
         public int MaxWidth => Images.Max(img => img.Width);
         public int MaxHeight => Images.Max(img => img.Height);
         public int Columns => (int)Math.Ceiling(Math.Sqrt((double)Images.Count * MaxHeight / MaxWidth));
@@ -24,7 +25,7 @@ namespace SpriteSheet
 
         public SpriteSheetGenerator(string[] paths)
         {
-            Paths = paths.OrderBy(p => p).ToArray();
+            Paths = paths;// paths.OrderBy(p => p).ToArray();
         }
 
         public void Load()
@@ -60,6 +61,8 @@ namespace SpriteSheet
             for (var i = 0; i < Images.Count; i++)
                 if (Images[i] != OriginImages[i])
                     Images[i].Dispose();
+
+            
 
             if (!ClipTransparent)
             {
@@ -160,7 +163,9 @@ namespace SpriteSheet
             var w = width / MaxWidth;
             var h = height / MaxHeight;
             var bitmap = new SKBitmap(width, height, SKColorType.Bgra8888, SKAlphaType.Premul);
-            using(var canvas = new SKCanvas(bitmap))
+            this.SpriteSheetData = new SpriteSheetData();
+            this.SpriteSheetData.sprites = new SpriteData[OriginImages.Count];
+            using (var canvas = new SKCanvas(bitmap))
             {
                 canvas.Clear();
                 for (var y = 0; y < h; y++)
@@ -172,6 +177,15 @@ namespace SpriteSheet
                             goto End;
                         canvas.DrawBitmap(Images[idx], x * MaxWidth, y * MaxHeight);
                         OnProgress?.Invoke((double)(idx + 1) / Images.Count);
+                        SpriteSheetData.sprites[idx] = new SpriteData()
+                        {
+                            x = x * MaxWidth,
+                            y = (h - 1 - y) * MaxHeight,
+                            width = MaxWidth,
+                            height = MaxHeight,
+                            pivotX = MaxWidth / 2,
+                            pivotY = MaxHeight / 2
+                        };
                     }
                 }
                 End:

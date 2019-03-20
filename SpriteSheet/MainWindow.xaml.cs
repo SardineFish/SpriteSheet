@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using SardineFish.Windows.Controls;
 using System.IO;
 using Microsoft.Win32;
+using Newtonsoft.Json;
 
 namespace SpriteSheet
 {
@@ -151,7 +152,15 @@ namespace SpriteSheet
         {
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
-                var paths = (e.Data.GetData(DataFormats.FileDrop) as string[]);
+                string[] paths;
+                try
+                {
+                    paths = (e.Data.GetData(DataFormats.FileDrop) as string[]).OrderBy(p => Convert.ToInt32(System.IO.Path.GetFileNameWithoutExtension(p))).ToArray();
+                }
+                catch
+                {
+                    paths = (e.Data.GetData(DataFormats.FileDrop) as string[]).OrderBy(p => p).ToArray();
+                }
                 SpriteSheet = new SpriteSheetGenerator(paths);
                 SpriteSheet.ClipTransparent = switchClip.SwitchStatus == SwitchStatus.On ? true : false;
                 SpriteSheet.OnProgress += SpriteSheet_OnProgress;
@@ -271,6 +280,28 @@ namespace SpriteSheet
                     fs.Close();
                 }
             }
+
+            if(switchSpriteSheetData.SwitchStatus == SwitchStatus.On)
+            {
+                var jsonPath = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(textPath.Text), $"{System.IO.Path.GetFileNameWithoutExtension(textPath.Text)}.json");
+                using(var ms = new MemoryStream())
+                {
+                    using(var sw = new StreamWriter(ms))
+                    {
+                        JsonSerializer.Create().Serialize(sw, SpriteSheet.SpriteSheetData);
+                        sw.Flush();
+
+                        ms.Position = 0;
+                        using (var fs = new FileStream(jsonPath, FileMode.Create))
+                        {
+                            ms.WriteTo(fs);
+                            fs.Flush();
+                            fs.Close();
+                        }
+                    }
+                }
+            }
+
             progressBar.Value = 100;
 
             await Task.Delay(500);
