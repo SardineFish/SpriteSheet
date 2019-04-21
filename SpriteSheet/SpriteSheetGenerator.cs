@@ -20,12 +20,14 @@ namespace SpriteSheet
         public int MaxHeight => Images.Max(img => img.Height);
         public int Columns => (int)Math.Ceiling(Math.Sqrt((double)Images.Count * MaxHeight / MaxWidth));
         public bool ClipTransparent = false;
+        public bool Reverse = false;
 
         public event Action<double> OnProgress;
 
         public SpriteSheetGenerator(string[] paths)
         {
             Paths = paths;// paths.OrderBy(p => p).ToArray();
+           
         }
 
         public void Load()
@@ -62,78 +64,98 @@ namespace SpriteSheet
                 if (Images[i] != OriginImages[i])
                     Images[i].Dispose();
 
+            Images = OriginImages;
+
             
-
-            if (!ClipTransparent)
+            if(Reverse)
             {
-                Images = OriginImages;
-                return;
-            }
-
-            var clipList = new SKRectI[OriginImages.Count];
-
-            for(var i = 0; i < OriginImages.Count; i++)
-            {
-                var bitmap = OriginImages[i];
-                var clip = new SKRectI();
-                if (ClipTransparent)
+                Images = Images.Select((originImg) =>
                 {
-                    // Clip X
-                    for(var x = 0; x < bitmap.Width; x++)
+                    var bitmap = new SKBitmap(originImg.Width, originImg.Height, SKColorType.Bgra8888, SKAlphaType.Premul);
+                    using (var canvas = new SKCanvas(bitmap))
                     {
-                        if (!ColumnTransparentScan(bitmap, x))
-                        {
-                            clip.Left = x;
-                            break;
-                        }
+                        canvas.Clear();
+                        canvas.Scale(-1, 1);
+                        canvas.DrawBitmap(originImg, new SKRectI(0, 0, originImg.Width, originImg.Height), new SKRectI(-originImg.Width, 0, 0, originImg.Height));
+                        canvas.Flush();
+                        canvas.Dispose();
                     }
-                    for(var x = bitmap.Width - 1; x >= 0; x--)
-                    {
-                        if (!ColumnTransparentScan(bitmap, x))
-                        {
-                            clip.Right = x + 1;
-                            break;
-                        }
-                    }
+                    return bitmap;
+                }).ToList();
+            }
 
-                    // Clip Y
-                    for(var y = 0; y < bitmap.Height; y++)
-                    {
-                        if (!RowTransparentScan(bitmap, y))
-                        {
-                            clip.Top = y;
-                            break;
-                        }
-                    }
-                    for(var y = bitmap.Height - 1; y >= 0; y--)
-                    {
-                        if(!RowTransparentScan(bitmap,y))
-                        {
-                            clip.Bottom = y + 1;
-                            break;
-                        }
-                    }
-                }
-                clipList[i] = clip;
-            }
-            var minX = clipList.Select(rect => rect.Left).Min();
-            var minY = clipList.Select(rect => rect.Top).Min();
-            Images = new List<SKBitmap>();
-            for (var i = 0; i < OriginImages.Count; i++)
+            if(ClipTransparent)
             {
-                var clip = clipList[i];
-                clip.Left = minX;
-                clip.Top = minY;
-                var bitmap = new SKBitmap(clip.Width, clip.Height, SKColorType.Bgra8888, SKAlphaType.Premul);
-                using (var canvas = new SKCanvas(bitmap))
+                var clipList = new SKRectI[Images.Count];
+
+                for (var i = 0; i < Images.Count; i++)
                 {
-                    canvas.Clear();
-                    canvas.DrawBitmap(OriginImages[i], clip, new SKRectI(0, 0, clip.Width, clip.Height));
-                    canvas.Flush();
-                    canvas.Dispose();
+                    var bitmap = Images[i];
+                    var clip = new SKRectI();
+                    if (ClipTransparent)
+                    {
+                        // Clip X
+                        for (var x = 0; x < bitmap.Width; x++)
+                        {
+                            if (!ColumnTransparentScan(bitmap, x))
+                            {
+                                clip.Left = x;
+                                break;
+                            }
+                        }
+                        for (var x = bitmap.Width - 1; x >= 0; x--)
+                        {
+                            if (!ColumnTransparentScan(bitmap, x))
+                            {
+                                clip.Right = x + 1;
+                                break;
+                            }
+                        }
+
+                        // Clip Y
+                        for (var y = 0; y < bitmap.Height; y++)
+                        {
+                            if (!RowTransparentScan(bitmap, y))
+                            {
+                                clip.Top = y;
+                                break;
+                            }
+                        }
+                        for (var y = bitmap.Height - 1; y >= 0; y--)
+                        {
+                            if (!RowTransparentScan(bitmap, y))
+                            {
+                                clip.Bottom = y + 1;
+                                break;
+                            }
+                        }
+                    }
+                    clipList[i] = clip;
                 }
-                Images.Add(bitmap);
+                var minX = clipList.Select(rect => rect.Left).Min();
+                var minY = clipList.Select(rect => rect.Top).Min();
+                var images = new List<SKBitmap>();
+                for (var i = 0; i < Images.Count; i++)
+                {
+                    var clip = clipList[i];
+                    clip.Left = minX;
+                    clip.Top = minY;
+                    var bitmap = new SKBitmap(clip.Width, clip.Height, SKColorType.Bgra8888, SKAlphaType.Premul);
+                    using (var canvas = new SKCanvas(bitmap))
+                    {
+                        canvas.Clear();
+                        canvas.DrawBitmap(Images[i], clip, new SKRectI(0, 0, clip.Width, clip.Height));
+                        canvas.Flush();
+                        canvas.Dispose();
+                    }
+                    images.Add(bitmap);
+                    if (Images != OriginImages)
+                        Images[i].Dispose();
+                }
+                Images = images;
             }
+
+            
         }
 
         private bool ColumnTransparentScan(SKBitmap bitmap, int column)

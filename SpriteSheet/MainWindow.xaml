@@ -78,8 +78,8 @@
                         <Controls:Switch x:Name="switchClip" Margin="5,0,0,0" SwitchChanged="switchClip_SwitchChanged"></Controls:Switch>
                         <TextBlock HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Center"><Run>Snap to 2</Run><Run Typography.Variants="Subscript" BaselineAlignment="Top" FontSize="6.667">n</Run></TextBlock>
                         <Controls:Switch x:Name="switchSnap2Pow" Padding="0" Margin="5,0,0,0" SwitchChanged="switchSnap2Pow_SwitchChanged"></Controls:Switch>
-                        <TextBlock VerticalAlignment="Center" Margin="20,0,0,0">Sprite Data</TextBlock>
-                        <Controls:Switch x:Name="switchSpriteSheetData" Padding="0" Margin="5,0,0,0" SwitchChanged="switchSnap2Pow_SwitchChanged"></Controls:Switch>
+                        <TextBlock VerticalAlignment="Center" Margin="20,0,0,0">Reverse</TextBlock>
+                        <Controls:Switch x:Name="switchReverse" Padding="0" Margin="5,0,0,0" SwitchChanged="switchReverse_SwitchChanged"></Controls:Switch>
                         <TextBlock VerticalAlignment="Center" Margin="20,0,0,0"></TextBlock>
                         <ComboBox x:Name="dropBackground" SelectedIndex="0" VerticalAlignment="Center" Style="{DynamicResource DropBox}" Margin="5,0,0,0" Width="100" SelectionChanged="dropBackground_SelectionChanged" Foreground="#FF4B4B4B">
                             <ComboBox.Items>

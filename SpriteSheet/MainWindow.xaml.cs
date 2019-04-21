@@ -163,6 +163,7 @@ namespace SpriteSheet
                 }
                 SpriteSheet = new SpriteSheetGenerator(paths);
                 SpriteSheet.ClipTransparent = switchClip.SwitchStatus == SwitchStatus.On ? true : false;
+                SpriteSheet.Reverse = switchReverse.SwitchStatus == SwitchStatus.On ? true : false;
                 SpriteSheet.OnProgress += SpriteSheet_OnProgress;
                 SpriteTask = new Task(()=>
                 {
@@ -204,6 +205,13 @@ namespace SpriteSheet
         {
             if (switchSnap2Pow.SwitchStatus == SwitchStatus.On)
                 switchMultiRow.SwitchStatus = SwitchStatus.On;
+            Update();
+        }
+
+        private void switchReverse_SwitchChanged(object sender, Switch.SwitchChangedEventArgs e)
+        {
+            SpriteSheet.Reverse = switchReverse.SwitchStatus == SwitchStatus.On ? true : false;
+            SpriteSheet.PostProcess();
             Update();
         }
 
@@ -278,27 +286,6 @@ namespace SpriteSheet
                     ms.WriteTo(fs);
                     fs.Flush();
                     fs.Close();
-                }
-            }
-
-            if(switchSpriteSheetData.SwitchStatus == SwitchStatus.On)
-            {
-                var jsonPath = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(textPath.Text), $"{System.IO.Path.GetFileNameWithoutExtension(textPath.Text)}.json");
-                using(var ms = new MemoryStream())
-                {
-                    using(var sw = new StreamWriter(ms))
-                    {
-                        JsonSerializer.Create().Serialize(sw, SpriteSheet.SpriteSheetData);
-                        sw.Flush();
-
-                        ms.Position = 0;
-                        using (var fs = new FileStream(jsonPath, FileMode.Create))
-                        {
-                            ms.WriteTo(fs);
-                            fs.Flush();
-                            fs.Close();
-                        }
-                    }
                 }
             }
 
